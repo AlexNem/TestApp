@@ -66,8 +66,8 @@ public class ProductRecViewAdapter extends RecyclerView.Adapter<ProductRecViewAd
         private ViewHolder(View view) {
             super(view);
             mView = view;
-            productImage = view.findViewById(R.id.image_product);
-            productName = view.findViewById(R.id.product_name);
+            productImage = view.findViewById(R.id.rec_image_product);
+            productName = view.findViewById(R.id.rec_product_name);
         }
 
         @Override
