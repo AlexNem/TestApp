@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +15,11 @@ import com.example.alex.testapp.recycler_view.ProductFragment;
 import com.example.alex.testapp.recycler_view.ProductRecViewAdapter;
 import com.example.alex.testapp.recycler_view.dummy.DummyContent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SaveProduct extends Fragment implements ProductFragment.OnListFragmentInteractionListener {
+public class SaveProductFragment extends Fragment implements ProductFragment.OnListFragmentInteractionListener {
 
     private View view;
     private ProductFragment.OnListFragmentInteractionListener listener;
-    private List<DummyContent.DummyItem> dummyItemList;
+
 
     @Nullable
     @Override

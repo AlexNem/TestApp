@@ -1,5 +1,6 @@
 package com.example.alex.testapp.activity.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,14 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.alex.testapp.R;
+import com.example.alex.testapp.activity.FoundProductActivity;
 
 public class SearchFragment extends Fragment {
 
     private String[] categoriesData = {"One", "2", "3", "Four", "5"};
     private View view;
+    private Intent foundActivityIntend;
+    private Button btnSubmit;
 
     @Nullable
     @Override
@@ -30,6 +35,8 @@ public class SearchFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initSpinner();
+        initResources();
+        clickSubmit();
     }
 
     private void initSpinner(){
@@ -53,6 +60,20 @@ public class SearchFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    private void initResources(){
+        foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
+        btnSubmit = view.findViewById(R.id.btn_submit);
+    }
+
+    private void clickSubmit(){
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(foundActivityIntend);
             }
         });
     }
