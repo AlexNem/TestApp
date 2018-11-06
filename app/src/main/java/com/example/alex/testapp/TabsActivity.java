@@ -1,5 +1,7 @@
 package com.example.alex.testapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -18,9 +20,15 @@ public class TabsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabs);
 
 
-
         initViewPager();
         initResources();
+    }
+
+    private void getUri() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                "https://openapi.etsy.com/v2/listings/active"
+                        + "?api_key=" + Constants.KEY ));
+        startActivity(intent);
     }
 
     private void initResources(){
