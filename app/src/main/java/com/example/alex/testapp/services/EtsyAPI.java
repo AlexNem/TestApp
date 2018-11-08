@@ -18,7 +18,7 @@ public interface EtsyAPI {
     @GET("listings/active")
     Observable<Product> getResult(
             @Query("api_key") String api_key,
-            @Query("&category") String category,
-            @Query("&keywords") String keywords
+            @Query("category") String category,
+            @Query("keywords") String keywords
     );
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.alex.testapp.Constants;
@@ -19,12 +20,10 @@ import com.example.alex.testapp.R;
 import com.example.alex.testapp.activity.FoundProductActivity;
 import com.example.alex.testapp.model.Categories;
 import com.example.alex.testapp.model.Product;
-import com.example.alex.testapp.model.ResponseCategories;
 import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.services.EtsyAPI;
 import com.example.alex.testapp.services.ServiceRetrofit;
 
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +34,14 @@ import retrofit2.Retrofit;
 
 public class SearchFragment extends Fragment {
 
-    private List<String> categoriesList;
-    private String[] categoriesData = {"One", "2", "3", "Four", "5"};
     private View view;
     private Intent foundActivityIntend;
     private Button btnSubmit;
     private ServiceRetrofit serviceRetrofit;
+    private String checkCategory;
+    private String searchQuery;
+    private EditText edSearch;
+    private Spinner spinner;
 
     @Nullable
     @Override
@@ -55,14 +56,19 @@ public class SearchFragment extends Fragment {
         super.onStart();
         initResources();
         getListCategories();
-        initSpinner();
         clickSubmit();
-        getListProduct();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void initResources(){
+        edSearch = view.findViewById(R.id.ed_search);
         serviceRetrofit = new ServiceRetrofit();
-        categoriesList = new ArrayList<>();
         foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
         btnSubmit = view.findViewById(R.id.btn_submit);
     }
@@ -73,26 +79,28 @@ public class SearchFragment extends Fragment {
         Observable<Categories> getCategories = service.getCategories(Constants.KEY);
         getCategories
                 .subscribeOn(Schedulers.io())
+                .map(categories -> toCategories(categories))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
-
-                    List<ResponseCategories> resultList = categories.getResults();
-                    ResponseCategories result = resultList.get(1);
-                    ResponseCategories result1 = resultList.get(2);
-
-
-                        Log.d("TAG", "result getListCategories \n" + result.getPageDescription()
-                        + "\n" + resultList.size()
-                        + "\n" + result1.getCategoryName());
+                    initSpinner(categories);
 
                 });
     }
 
+    private List<String> toCategories(Categories categories){
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < categories.getResults().size(); i++){
+            list.add(categories.getResults().get(i).getCategoryName());
+        }
+        return list;
+    }
+
     private void getListProduct(){
+        Log.d("TAG", "start getListProduct ");
         Retrofit retrofit = serviceRetrofit.getResultRetrofit();
         EtsyAPI service = retrofit.create(EtsyAPI.class);
         Observable<Product> getResult = service.getResult(Constants.KEY,
-                "paper_goods", "terminator");
+                checkCategory, searchQuery);
         getResult
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -108,18 +116,19 @@ public class SearchFragment extends Fragment {
                 });
     }
 
-    private void initSpinner(){
+    private void initSpinner(List<String> categoriesList){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                R.layout.support_simple_spinner_dropdown_item, categoriesData);
+                R.layout.support_simple_spinner_dropdown_item, categoriesList);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        Spinner spinner = view.findViewById(R.id.sp_categories);
+        spinner = view.findViewById(R.id.sp_categories);
         spinner.setAdapter(adapter);
         spinner.setPrompt("Categories");
-        spinner.setSelection(0);
+        spinner.setSelection(21);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                checkCategory = spinner.getSelectedItem().toString();
+                Log.d("TAG", "check " + checkCategory);
             }
 
             @Override
@@ -129,11 +138,14 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void setCategories(){
-
-    }
-
     private void clickSubmit(){
-        btnSubmit.setOnClickListener(listener -> startActivity(foundActivityIntend));
+        btnSubmit.setOnClickListener(listener -> {
+                    searchQuery = edSearch.getText().toString();
+                    Log.d("TAG", "search word " + searchQuery);
+                    getListProduct();
+                    startActivity(foundActivityIntend);
+                }
+
+        );
     }
 }
