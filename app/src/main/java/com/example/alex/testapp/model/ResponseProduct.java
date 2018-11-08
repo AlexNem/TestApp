@@ -1,14 +1,13 @@
 
 package com.example.alex.testapp.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result implements Serializable
-{
+import java.util.ArrayList;
+import java.util.List;
+
+public class ResponseProduct {
 
     @SerializedName("listing_id")
     @Expose
@@ -51,19 +50,19 @@ public class Result implements Serializable
     private int quantity;
     @SerializedName("sku")
     @Expose
-    private List<Object> sku = new ArrayList<Object>();
+    private List<Object> sku = new ArrayList<>();
     @SerializedName("tags")
     @Expose
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @SerializedName("category_path")
     @Expose
-    private List<String> categoryPath = new ArrayList<String>();
+    private List<String> categoryPath = new ArrayList<>();
     @SerializedName("category_path_ids")
     @Expose
-    private List<Integer> categoryPathIds = new ArrayList<Integer>();
+    private List<Integer> categoryPathIds = new ArrayList<>();
     @SerializedName("materials")
     @Expose
-    private List<String> materials = new ArrayList<String>();
+    private List<String> materials = new ArrayList<>();
     @SerializedName("shop_section_id")
     @Expose
     private int shopSectionId;
@@ -156,11 +155,10 @@ public class Result implements Serializable
     private int taxonomyId;
     @SerializedName("taxonomy_path")
     @Expose
-    private List<String> taxonomyPath = new ArrayList<String>();
+    private List<String> taxonomyPath = new ArrayList<>();
     @SerializedName("used_manufacturer")
     @Expose
     private boolean usedManufacturer;
-    private final static long serialVersionUID = -6999482512599715687L;
 
     public int getListingId() {
         return listingId;
@@ -561,5 +559,6 @@ public class Result implements Serializable
     public void setUsedManufacturer(boolean usedManufacturer) {
         this.usedManufacturer = usedManufacturer;
     }
+
 
 }

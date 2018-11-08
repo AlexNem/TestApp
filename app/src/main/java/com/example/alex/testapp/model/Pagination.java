@@ -1,12 +1,10 @@
 
 package com.example.alex.testapp.model;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Pagination implements Serializable
-{
+public class Pagination {
 
     @SerializedName("effective_limit")
     @Expose
@@ -23,7 +21,6 @@ public class Pagination implements Serializable
     @SerializedName("next_page")
     @Expose
     private int nextPage;
-    private final static long serialVersionUID = -8042364636819275615L;
 
     public int getEffectiveLimit() {
         return effectiveLimit;

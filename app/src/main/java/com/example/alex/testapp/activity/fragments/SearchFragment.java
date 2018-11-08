@@ -18,9 +18,15 @@ import com.example.alex.testapp.Constants;
 import com.example.alex.testapp.R;
 import com.example.alex.testapp.activity.FoundProductActivity;
 import com.example.alex.testapp.model.Categories;
-import com.example.alex.testapp.model.Result;
+import com.example.alex.testapp.model.Product;
+import com.example.alex.testapp.model.ResponseCategories;
+import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.services.EtsyAPI;
 import com.example.alex.testapp.services.ServiceRetrofit;
+
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,6 +35,7 @@ import retrofit2.Retrofit;
 
 public class SearchFragment extends Fragment {
 
+    private List<String> categoriesList;
     private String[] categoriesData = {"One", "2", "3", "Four", "5"};
     private View view;
     private Intent foundActivityIntend;
@@ -46,14 +53,21 @@ public class SearchFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initSpinner();
         initResources();
+        getListCategories();
+        initSpinner();
         clickSubmit();
-        getCategories();
-        getResult();
+        getListProduct();
     }
 
-    private void getCategories(){
+    private void initResources(){
+        serviceRetrofit = new ServiceRetrofit();
+        categoriesList = new ArrayList<>();
+        foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
+        btnSubmit = view.findViewById(R.id.btn_submit);
+    }
+
+    private void getListCategories(){
         Retrofit retrofit = serviceRetrofit.getCategoriesRetrofit();
         EtsyAPI service = retrofit.create(EtsyAPI.class);
         Observable<Categories> getCategories = service.getCategories(Constants.KEY);
@@ -61,21 +75,36 @@ public class SearchFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
-                    Log.d("TAG", "result getCategories " + categories.getCount());
+
+                    List<ResponseCategories> resultList = categories.getResults();
+                    ResponseCategories result = resultList.get(1);
+                    ResponseCategories result1 = resultList.get(2);
+
+
+                        Log.d("TAG", "result getListCategories \n" + result.getPageDescription()
+                        + "\n" + resultList.size()
+                        + "\n" + result1.getCategoryName());
+
                 });
     }
 
-    private void getResult(){
+    private void getListProduct(){
         Retrofit retrofit = serviceRetrofit.getResultRetrofit();
         EtsyAPI service = retrofit.create(EtsyAPI.class);
-        Observable<Result> getResult = service.getResult(Constants.KEY,
+        Observable<Product> getResult = service.getResult(Constants.KEY,
                 "paper_goods", "terminator");
         getResult
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
+                .subscribe(product -> {
 
-                    Log.d("TAG", "result getResult " + result);
+                    String responseCategories = product.getType();
+                    List<ResponseProduct> responseProductList = product.getResponseProducts();
+
+                    Log.d("TAG", "result getListProduct " + product.getCount()
+
+                            + "\n" + responseCategories
+                            + "\n" + responseProductList.size());
                 });
     }
 
@@ -83,14 +112,10 @@ public class SearchFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 R.layout.support_simple_spinner_dropdown_item, categoriesData);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
         Spinner spinner = view.findViewById(R.id.sp_categories);
         spinner.setAdapter(adapter);
-
         spinner.setPrompt("Categories");
-
         spinner.setSelection(0);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -104,10 +129,8 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void initResources(){
-        serviceRetrofit = new ServiceRetrofit();
-        foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
-        btnSubmit = view.findViewById(R.id.btn_submit);
+    private void setCategories(){
+
     }
 
     private void clickSubmit(){

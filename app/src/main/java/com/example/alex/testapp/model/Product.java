@@ -1,21 +1,20 @@
-
 package com.example.alex.testapp.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-public class Categories implements Serializable
-{
+public class Product implements Serializable {
 
     @SerializedName("count")
     @Expose
     private int count;
-    @SerializedName("results")
+    @SerializedName("responseProducts")
     @Expose
-    private List<ResponseCategories> results = new ArrayList<>();
+    private List<ResponseProduct> responseProducts = new ArrayList<>();
     @SerializedName("params")
     @Expose
     private Params params;
@@ -25,7 +24,6 @@ public class Categories implements Serializable
     @SerializedName("pagination")
     @Expose
     private Pagination pagination;
-    private final static long serialVersionUID = 7952064229345129574L;
 
     public int getCount() {
         return count;
@@ -35,12 +33,12 @@ public class Categories implements Serializable
         this.count = count;
     }
 
-    public List<ResponseCategories> getResults() {
-        return results;
+    public List<ResponseProduct> getResponseProducts() {
+        return responseProducts;
     }
 
-    public void setResults(List<ResponseCategories> results) {
-        this.results = results;
+    public void setResponseProducts(List<ResponseProduct> responseProducts) {
+        this.responseProducts = responseProducts;
     }
 
     public Params getParams() {

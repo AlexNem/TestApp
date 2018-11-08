@@ -2,7 +2,7 @@ package com.example.alex.testapp.services;
 
 
 import com.example.alex.testapp.model.Categories;
-import com.example.alex.testapp.model.Result;
+import com.example.alex.testapp.model.Product;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -16,7 +16,7 @@ public interface EtsyAPI {
     );
 
     @GET("listings/active")
-    Observable<Result> getResult(
+    Observable<Product> getResult(
             @Query("api_key") String api_key,
             @Query("&category") String category,
             @Query("&keywords") String keywords

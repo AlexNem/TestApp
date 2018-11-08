@@ -1,12 +1,10 @@
 
 package com.example.alex.testapp.model;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Params implements Serializable
-{
+public class Params {
 
     @SerializedName("limit")
     @Expose
@@ -65,7 +63,6 @@ public class Params implements Serializable
     @SerializedName("translate_keywords")
     @Expose
     private String translateKeywords;
-    private final static long serialVersionUID = 9083254774964937918L;
 
     public int getLimit() {
         return limit;
