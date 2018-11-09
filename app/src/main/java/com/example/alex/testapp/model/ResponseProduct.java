@@ -9,6 +9,16 @@ import java.util.List;
 
 public class ResponseProduct {
 
+    public ResponseProduct(){}
+
+    public ResponseProduct(int listingId, String url, String title, String description, String price) {
+        this.listingId = listingId;
+        this.url = url;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+    }
+
     @SerializedName("listing_id")
     @Expose
     private int listingId;

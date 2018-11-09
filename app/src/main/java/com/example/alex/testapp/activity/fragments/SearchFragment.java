@@ -1,6 +1,10 @@
 package com.example.alex.testapp.activity.fragments;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +22,7 @@ import android.widget.Spinner;
 import com.example.alex.testapp.Constants;
 import com.example.alex.testapp.R;
 import com.example.alex.testapp.activity.FoundProductActivity;
+import com.example.alex.testapp.database.ProductsDataBase;
 import com.example.alex.testapp.model.Categories;
 import com.example.alex.testapp.model.Product;
 import com.example.alex.testapp.model.ResponseProduct;
@@ -42,6 +47,7 @@ public class SearchFragment extends Fragment {
     private String searchQuery;
     private EditText edSearch;
     private Spinner spinner;
+    private ProductsDataBase productsDB;
 
     @Nullable
     @Override
@@ -71,7 +77,10 @@ public class SearchFragment extends Fragment {
         serviceRetrofit = new ServiceRetrofit();
         foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
         btnSubmit = view.findViewById(R.id.btn_submit);
+        productsDB = new ProductsDataBase(getContext());
     }
+
+
 
     private void getListCategories(){
         Retrofit retrofit = serviceRetrofit.getCategoriesRetrofit();
@@ -114,7 +123,7 @@ public class SearchFragment extends Fragment {
                 .map(product -> toResult(product))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(product -> {
-
+                    productsDB.writeDB(product);
                     List<ResponseProduct> responseProductList = product;
 
                     Log.d("TAG", "result getListProduct " + product.size()
