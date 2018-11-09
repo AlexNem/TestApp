@@ -81,9 +81,7 @@ public class ResponseProduct {
     @SerializedName("num_favorers")
     @Expose
     private int numFavorers;
-    @SerializedName("shipping_template_id")
-    @Expose
-    private int shippingTemplateId;
+
     @SerializedName("processing_min")
     @Expose
     private int processingMin;
@@ -352,13 +350,6 @@ public class ResponseProduct {
         this.numFavorers = numFavorers;
     }
 
-    public int getShippingTemplateId() {
-        return shippingTemplateId;
-    }
-
-    public void setShippingTemplateId(int shippingTemplateId) {
-        this.shippingTemplateId = shippingTemplateId;
-    }
 
     public int getProcessingMin() {
         return processingMin;

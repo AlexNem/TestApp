@@ -11,10 +11,10 @@ public class Product implements Serializable {
 
     @SerializedName("count")
     @Expose
-    private int count;
-    @SerializedName("responseProducts")
+    private Integer count;
+    @SerializedName("results")
     @Expose
-    private List<ResponseProduct> responseProducts = new ArrayList<>();
+    private List<ResponseProduct> results = new ArrayList<>();
     @SerializedName("params")
     @Expose
     private Params params;
@@ -25,20 +25,20 @@ public class Product implements Serializable {
     @Expose
     private Pagination pagination;
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public List<ResponseProduct> getResponseProducts() {
-        return responseProducts;
+    public List<ResponseProduct> getResults() {
+        return results;
     }
 
-    public void setResponseProducts(List<ResponseProduct> responseProducts) {
-        this.responseProducts = responseProducts;
+    public void setResults(List<ResponseProduct> results) {
+        this.results = results;
     }
 
     public Params getParams() {

@@ -82,11 +82,19 @@ public class SearchFragment extends Fragment {
                 .map(categories -> toCategories(categories))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
+                    Log.d("TAG", "size catList " + categories.size());
                     initSpinner(categories);
 
                 });
     }
 
+    private List<ResponseProduct> toResult(Product product){
+        List<ResponseProduct> list = new ArrayList<>();
+        for (int i = 0; i < product.getResults().size(); i++){
+            list.add(product.getResults().get(i));
+        }
+        return list;
+    }
     private List<String> toCategories(Categories categories){
         List<String> list = new ArrayList<>();
         for (int i = 0; i < categories.getResults().size(); i++){
@@ -103,15 +111,14 @@ public class SearchFragment extends Fragment {
                 checkCategory, searchQuery);
         getResult
                 .subscribeOn(Schedulers.io())
+                .map(product -> toResult(product))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(product -> {
 
-                    String responseCategories = product.getType();
-                    List<ResponseProduct> responseProductList = product.getResponseProducts();
+                    List<ResponseProduct> responseProductList = product;
 
-                    Log.d("TAG", "result getListProduct " + product.getCount()
+                    Log.d("TAG", "result getListProduct " + product.size()
 
-                            + "\n" + responseCategories
                             + "\n" + responseProductList.size());
                 });
     }
