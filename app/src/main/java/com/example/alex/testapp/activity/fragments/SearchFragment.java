@@ -1,10 +1,6 @@
 package com.example.alex.testapp.activity.fragments;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,6 +100,7 @@ public class SearchFragment extends Fragment {
         }
         return list;
     }
+
     private List<String> toCategories(Categories categories){
         List<String> list = new ArrayList<>();
         for (int i = 0; i < categories.getResults().size(); i++){

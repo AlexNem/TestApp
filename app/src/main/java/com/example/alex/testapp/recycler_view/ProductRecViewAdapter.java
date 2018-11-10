@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alex.testapp.R;
+import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.recycler_view.ProductFragment.OnListFragmentInteractionListener;
-import com.example.alex.testapp.recycler_view.dummy.DummyContent.DummyItem;
+import com.example.alex.testapp.recycler_view.dummy.ProductContent.DummyItem;
 
 import java.util.List;
 
@@ -19,10 +20,12 @@ import java.util.List;
  */
 public class ProductRecViewAdapter extends RecyclerView.Adapter<ProductRecViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+
+
+    private final List<ResponseProduct> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public ProductRecViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public ProductRecViewAdapter(List<ResponseProduct> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,8 +40,8 @@ public class ProductRecViewAdapter extends RecyclerView.Adapter<ProductRecViewAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.productImage.setText(mValues.get(position).details);
-        holder.productName.setText(mValues.get(position).content);
+        holder.productImage.setText(mValues.get(position).getUrl());
+        holder.productName.setText(mValues.get(position).getTitle());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +64,7 @@ public class ProductRecViewAdapter extends RecyclerView.Adapter<ProductRecViewAd
         private final View mView;
         private final TextView productImage;
         private final TextView productName;
-        private DummyItem mItem;
+        private ResponseProduct mItem;
 
         private ViewHolder(View view) {
             super(view);

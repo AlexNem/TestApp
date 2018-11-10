@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alex.testapp.R;
-import com.example.alex.testapp.recycler_view.dummy.DummyContent;
-import com.example.alex.testapp.recycler_view.dummy.DummyContent.DummyItem;
+import com.example.alex.testapp.model.ResponseProduct;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -70,7 +69,7 @@ public class ProductFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProductRecViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new ProductRecViewAdapter(new ArrayList<>(), mListener));
         }
         return view;
     }
@@ -105,6 +104,6 @@ public class ProductFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(ResponseProduct item);
     }
 }

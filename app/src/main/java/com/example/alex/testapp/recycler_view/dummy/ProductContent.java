@@ -1,5 +1,9 @@
 package com.example.alex.testapp.recycler_view.dummy;
 
+import android.database.sqlite.SQLiteDatabase;
+
+import com.example.alex.testapp.database.ProductsDataBase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.Map;
  * <p>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class ProductContent {
 
     /**
      * An array of sample (dummy) items.
@@ -41,6 +45,7 @@ public class DummyContent {
         return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
+
     private static String makeDetails(int position) {
         StringBuilder builder = new StringBuilder();
         builder.append("Details about Item: ").append(position);
@@ -69,4 +74,5 @@ public class DummyContent {
             return content;
         }
     }
+
 }
