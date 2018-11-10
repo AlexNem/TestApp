@@ -26,7 +26,7 @@ public class FoundProductActivity extends AppCompatActivity
 implements SwipeRefreshLayout.OnRefreshListener {
 
     private ProductFragment.OnListFragmentInteractionListener listener;
-    private List<ProductContent.DummyItem> list;
+    private List<ResponseProduct> mockList;
     private List<ResponseProduct> itemList;
     private Intent productActivityIntent;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -57,6 +57,7 @@ implements SwipeRefreshLayout.OnRefreshListener {
     private void initResources(){
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         productActivityIntent = new Intent(this, ProductActivity.class);
         listener = new ProductFragment.OnListFragmentInteractionListener() {
             @Override
@@ -65,13 +66,14 @@ implements SwipeRefreshLayout.OnRefreshListener {
             }
         };
         itemList = getProductList(getBaseContext());
-        list = new ArrayList<>();
-        list.add(0, new ProductContent.DummyItem("1", "content",
-                "details"));
-        list.add(1, new ProductContent.DummyItem("2", "content1",
-                "details1"));
-        list.add(2, new ProductContent.DummyItem("3", "content2",
-                "details2"));
+        mockList = new ArrayList<>();
+        mockList.add(0, new ResponseProduct(1, "content",
+                "details", "description", "21"));
+        mockList.add(1, new ResponseProduct(2, "content",
+                "details", "description1", "32"));
+        mockList.add(2, new ResponseProduct(3, "content",
+                "details", "description2", "46"));
+
     }
 
     private List<ResponseProduct> getProductList(Context context){

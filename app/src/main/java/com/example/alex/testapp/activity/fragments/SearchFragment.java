@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.alex.testapp.Constants;
@@ -20,6 +21,7 @@ import com.example.alex.testapp.R;
 import com.example.alex.testapp.activity.FoundProductActivity;
 import com.example.alex.testapp.database.ProductsDataBase;
 import com.example.alex.testapp.model.Categories;
+import com.example.alex.testapp.model.Image;
 import com.example.alex.testapp.model.Product;
 import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.services.EtsyAPI;
@@ -114,7 +116,7 @@ public class SearchFragment extends Fragment {
         Retrofit retrofit = serviceRetrofit.getResultRetrofit();
         EtsyAPI service = retrofit.create(EtsyAPI.class);
         Observable<Product> getResult = service.getResult(Constants.KEY,
-                checkCategory, searchQuery);
+                checkCategory, searchQuery, "Images");
         getResult
                 .subscribeOn(Schedulers.io())
                 .map(product -> toResult(product))
@@ -122,10 +124,15 @@ public class SearchFragment extends Fragment {
                 .subscribe(product -> {
                     productsDB.writeDB(product);
                     List<ResponseProduct> responseProductList = product;
+                    ResponseProduct responseProduct = product.get(0);
+                    List<Image> imageList = responseProduct.getImages();
+                    Image image = imageList.get(0);
 
                     Log.d("TAG", "result getListProduct " + product.size()
 
-                            + "\n" + responseProductList.size());
+                            + "\n" + responseProduct
+                            + "\n" + image.getUrl75x75()
+                            + "\n" + imageList.size());
                 });
     }
 

@@ -18,6 +18,17 @@ public class ResponseProduct {
         this.description = description;
         this.price = price;
     }
+    @SerializedName("Images")
+    @Expose
+    private List<Image> images = new ArrayList<>();
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
 
     @SerializedName("listing_id")
     @Expose

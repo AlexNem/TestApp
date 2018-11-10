@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.alex.testapp.model.Image;
 import com.example.alex.testapp.model.ResponseProduct;
 
 import java.util.List;
@@ -51,8 +52,10 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         for (int i=0; i<productList.size(); i++){
             ResponseProduct responseProduct = productList.get(i);
+            List<Image> imageList = responseProduct.getImages();
+            Image image = imageList.get(0);
             contentValues.put(ProductsDataBase.KEY_ID,responseProduct.getListingId());
-            contentValues.put(ProductsDataBase.KEY_IMAGE_URL,responseProduct.getUrl());
+            contentValues.put(ProductsDataBase.KEY_IMAGE_URL,image.getUrl75x75());
             contentValues.put(ProductsDataBase.KEY_NAME,responseProduct.getTitle());
             contentValues.put(ProductsDataBase.KEY_DESCRIPTION,responseProduct.getDescription());
             contentValues.put(ProductsDataBase.KEY_PRICE,responseProduct.getPrice());
@@ -72,6 +75,7 @@ public class ProductsDataBase extends SQLiteOpenHelper {
             int descIndex = cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION);
             int priceIndex = cursor.getColumnIndex(ProductsDataBase.KEY_PRICE);
             do {
+
                 Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
                         ", url = " + cursor.getString(urlIndex) +
                         ", name = " + cursor.getString(nameIndex) +

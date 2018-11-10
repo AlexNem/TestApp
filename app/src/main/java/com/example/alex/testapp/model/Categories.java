@@ -25,7 +25,7 @@ public class Categories implements Serializable
     @SerializedName("pagination")
     @Expose
     private Pagination pagination;
-    private final static long serialVersionUID = 7952064229345129574L;
+
 
     public int getCount() {
         return count;
