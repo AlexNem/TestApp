@@ -47,7 +47,7 @@ public class SaveProductFragment extends Fragment implements ProductFragment.OnL
 
     private List<ResponseProduct> getProductList(Context context){
         List<ResponseProduct> list = new ArrayList<>();
-        String query = "SELECT * FROM " + ProductsDataBase.DB_FIELD;
+        String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
         ProductsDataBase productsDB = new ProductsDataBase(context);
         SQLiteDatabase db = productsDB.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);

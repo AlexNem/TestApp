@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.alex.testapp.R;
 import com.example.alex.testapp.database.ProductsDataBase;
@@ -36,6 +37,7 @@ implements SwipeRefreshLayout.OnRefreshListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_found);
 
+        Toast.makeText(this, "Pull to refresh!!!", Toast.LENGTH_LONG).show();
         initResources();
         initRecyclerView();
     }
@@ -62,6 +64,8 @@ implements SwipeRefreshLayout.OnRefreshListener {
         listener = new ProductFragment.OnListFragmentInteractionListener() {
             @Override
             public void onListFragmentInteraction(ResponseProduct item) {
+                item.getListingId();
+                productActivityIntent.putExtra("key", item.getListingId());
                 startActivity(productActivityIntent);
             }
         };
@@ -78,9 +82,9 @@ implements SwipeRefreshLayout.OnRefreshListener {
 
     private List<ResponseProduct> getProductList(Context context){
         List<ResponseProduct> list = new ArrayList<>();
-        String query = "SELECT * FROM " + ProductsDataBase.DB_FIELD;
+        String query = "SELECT * FROM " + ProductsDataBase.FIND_PRODUCT_DB;
         ProductsDataBase productsDB = new ProductsDataBase(context);
-        SQLiteDatabase db = productsDB.getWritableDatabase();
+        SQLiteDatabase db = productsDB.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()){
             do {

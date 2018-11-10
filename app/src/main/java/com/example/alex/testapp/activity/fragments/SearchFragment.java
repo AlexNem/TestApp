@@ -1,6 +1,8 @@
 package com.example.alex.testapp.activity.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.alex.testapp.Constants;
@@ -122,7 +123,7 @@ public class SearchFragment extends Fragment {
                 .map(product -> toResult(product))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(product -> {
-                    productsDB.writeDB(product);
+                    productsDB.writeListDB(product);
                     List<ResponseProduct> responseProductList = product;
                     ResponseProduct responseProduct = product.get(0);
                     List<Image> imageList = responseProduct.getImages();
@@ -134,7 +135,9 @@ public class SearchFragment extends Fragment {
                             + "\n" + image.getUrl75x75()
                             + "\n" + imageList.size());
                 });
+
     }
+
 
     private void initSpinner(List<String> categoriesList){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
@@ -162,10 +165,17 @@ public class SearchFragment extends Fragment {
         btnSubmit.setOnClickListener(listener -> {
                     searchQuery = edSearch.getText().toString();
                     Log.d("TAG", "search word " + searchQuery);
+                    deleteDB();
                     getListProduct();
                     startActivity(foundActivityIntend);
                 }
 
         );
+    }
+
+    private void deleteDB() {
+        ProductsDataBase productsDB = new ProductsDataBase(getContext());
+        SQLiteDatabase db = productsDB.getReadableDatabase();
+        db.delete(ProductsDataBase.FIND_PRODUCT_DB, null, null);
     }
 }
