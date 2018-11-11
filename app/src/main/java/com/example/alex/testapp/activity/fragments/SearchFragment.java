@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.alex.testapp.Constants;
 import com.example.alex.testapp.R;
@@ -163,11 +164,18 @@ public class SearchFragment extends Fragment {
 
     private void clickSubmit(){
         btnSubmit.setOnClickListener(listener -> {
-                    searchQuery = edSearch.getText().toString();
-                    Log.d("TAG", "search word " + searchQuery);
-                    deleteDB();
-                    getListProduct();
-                    startActivity(foundActivityIntend);
+            searchQuery = edSearch.getText().toString();
+            if (searchQuery.isEmpty()){
+                Toast.makeText(getContext(), "Search field is empty!Please fill search!",
+                        Toast.LENGTH_LONG).show();
+            }else {
+                Log.d("TAG", "search word " + searchQuery);
+                deleteDB();
+                getListProduct();
+                startActivity(foundActivityIntend);
+            }
+
+
                 }
 
         );
