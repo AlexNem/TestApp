@@ -2,8 +2,6 @@ package com.example.alex.testapp.activity.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,17 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.alex.testapp.R;
-import com.example.alex.testapp.TabsActivity;
 import com.example.alex.testapp.activity.ProductActivity;
 import com.example.alex.testapp.database.ProductsDataBase;
 import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.recycler_view.ProductFragment;
 import com.example.alex.testapp.recycler_view.ProductRecViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SaveProductFragment extends Fragment {
@@ -32,6 +27,7 @@ public class SaveProductFragment extends Fragment {
     private ProductFragment.OnListFragmentInteractionListener listener;
     private List<ResponseProduct> itemList;
     private int listing_id;
+    private ProductsDataBase productsDB;
 
 
     @Nullable
@@ -52,6 +48,7 @@ public class SaveProductFragment extends Fragment {
     }
 
     private void initResources(){
+        productsDB = new ProductsDataBase(getContext());
         listing_id = getActivity().getIntent().getIntExtra("key", 0);
         listener = new ProductFragment.OnListFragmentInteractionListener() {
             @Override
@@ -64,22 +61,7 @@ public class SaveProductFragment extends Fragment {
     }
 
     private List<ResponseProduct> getProductList(Context context){
-        List<ResponseProduct> list = new ArrayList<>();
-        String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
-        ProductsDataBase productsDB = new ProductsDataBase(context);
-        SQLiteDatabase db = productsDB.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()){
-            do {
-                int id = cursor.getInt(cursor.getColumnIndex(ProductsDataBase.KEY_ID));
-                String url = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL));
-                String name = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_NAME));
-                String description = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION));
-                String price = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_PRICE));
-                list.add(new ResponseProduct(id, url, name, description, price));
-            }while (cursor.moveToNext());
-        }
-        productsDB.close();
+        List<ResponseProduct> list = productsDB.getSaveProductList();
         return list;
     }
 

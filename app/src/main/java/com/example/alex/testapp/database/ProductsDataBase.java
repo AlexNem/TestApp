@@ -74,28 +74,23 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         }
 
     }
-    public void readListDB(){
-        SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.query(ProductsDataBase.FIND_PRODUCT_DB, null, null, null, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(ProductsDataBase.KEY_ID);
-            int urlIndex = cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL);
-            int nameIndex = cursor.getColumnIndex(ProductsDataBase.KEY_NAME);
-            int descIndex = cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION);
-            int priceIndex = cursor.getColumnIndex(ProductsDataBase.KEY_PRICE);
+    public List<ResponseProduct> getFoundProductList(){
+        List<ResponseProduct> list = new ArrayList<>();
+        String query = "SELECT * FROM " + ProductsDataBase.FIND_PRODUCT_DB;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
             do {
-
-                Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
-                        ", url = " + cursor.getString(urlIndex) +
-                        ", name = " + cursor.getString(nameIndex) +
-                        ", description = " + cursor.getString(descIndex) +
-                        ", price = " + cursor.getString(priceIndex));
-            } while (cursor.moveToNext());
-        } else
-            Log.d("mLog","0 rows");
-
-        cursor.close();
+                int id = cursor.getInt(cursor.getColumnIndex(ProductsDataBase.KEY_ID));
+                String url = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL));
+                String name = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION));
+                String price = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_PRICE));
+                list.add(new ResponseProduct(id, url, name, description, price));
+            }while (cursor.moveToNext());
+        }
+        this.close();
+        return list;
     }
 
     public void saveProduct(ResponseProduct product){
@@ -126,28 +121,22 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<ResponseProduct> getProductList(){
-        SQLiteDatabase database = this.getReadableDatabase();
+    public List<ResponseProduct> getSaveProductList(){
         List<ResponseProduct> list = new ArrayList<>();
-        Cursor cursor = database.query(ProductsDataBase.SAVE_PRODUCT_DB, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(ProductsDataBase.KEY_ID);
-            int urlIndex = cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL);
-            int nameIndex = cursor.getColumnIndex(ProductsDataBase.KEY_NAME);
-            int descIndex = cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION);
-            int priceIndex = cursor.getColumnIndex(ProductsDataBase.KEY_PRICE);
+        String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
             do {
-
-                Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
-                        ", url = " + cursor.getString(urlIndex) +
-                        ", name = " + cursor.getString(nameIndex) +
-                        ", description = " + cursor.getString(descIndex) +
-                        ", price = " + cursor.getString(priceIndex));
-            } while (cursor.moveToNext());
-        } else
-            Log.d("mLog","0 rows");
-
-        cursor.close();
+                int id = cursor.getInt(cursor.getColumnIndex(ProductsDataBase.KEY_ID));
+                String url = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL));
+                String name = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION));
+                String price = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_PRICE));
+                list.add(new ResponseProduct(id, url, name, description, price));
+            }while (cursor.moveToNext());
+        }
+        db.close();
         return list;
     }
 
