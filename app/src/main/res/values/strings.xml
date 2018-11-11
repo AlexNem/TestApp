@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TestApp</string>
     <string name="btn_submit">Submit</string>
-    <string name="ed_search">terminator</string>
+    <string name="ed_search">Search</string>
     <string name="btn_save">Save</string>
     <string name="btn_delete">Delete</string>
+    <string name="inf_category">Category:</string>
 </resources>

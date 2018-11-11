@@ -6,32 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".TabsActivity">
 
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:background="@drawable/ic_zoom_in_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/sp_categories"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ed_search"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/ed_search"
-        android:layout_width="wrap_content"
+        android:layout_width="91dp"
         android:layout_height="wrap_content"
-        android:text="@string/ed_search"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/ed_search"
         app:layout_constraintBottom_toBottomOf="@id/sp_categories"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/inf_categories"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:text="@string/inf_category"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_submit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btn_submit"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/sp_categories"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"
         app:layout_constraintBottom_toBottomOf="@id/btn_submit"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/inf_categories"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Spinner>
+        app:layout_constraintTop_toTopOf="parent"></Spinner>
 
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_submit"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
