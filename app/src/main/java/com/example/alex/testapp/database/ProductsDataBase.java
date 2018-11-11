@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.alex.testapp.model.Image;
 import com.example.alex.testapp.model.ResponseProduct;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsDataBase extends SQLiteOpenHelper {
@@ -101,18 +102,33 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         ResponseProduct responseProduct = product;
-        List<Image> imageList = responseProduct.getImages();
-        Image image = imageList.get(0);
         contentValues.put(ProductsDataBase.KEY_ID,responseProduct.getListingId());
-        contentValues.put(ProductsDataBase.KEY_IMAGE_URL,image.getUrl75x75());
+        contentValues.put(ProductsDataBase.KEY_IMAGE_URL,responseProduct.getUrl());
         contentValues.put(ProductsDataBase.KEY_NAME,responseProduct.getTitle());
         contentValues.put(ProductsDataBase.KEY_DESCRIPTION,responseProduct.getDescription());
         contentValues.put(ProductsDataBase.KEY_PRICE,responseProduct.getPrice());
         database.insert(ProductsDataBase.SAVE_PRODUCT_DB, null, contentValues);
     }
 
-    public void readProduct(){
+    public void deleteProduct(int listing_id){
+        String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = "_id = " + listing_id;
+        String selectionArgs[] = new String[] {};
+        Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
+                null, null, null, null);
+        if (cursor.moveToFirst()){
+            do {
+                Log.d("TAG", "Delete product " );
+            }while (cursor.moveToNext());
+        }
+        db.delete(SAVE_PRODUCT_DB, selection, null);
+        db.close();
+    }
+
+    public List<ResponseProduct> getProductList(){
         SQLiteDatabase database = this.getReadableDatabase();
+        List<ResponseProduct> list = new ArrayList<>();
         Cursor cursor = database.query(ProductsDataBase.SAVE_PRODUCT_DB, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             int idIndex = cursor.getColumnIndex(ProductsDataBase.KEY_ID);
@@ -132,5 +148,8 @@ public class ProductsDataBase extends SQLiteOpenHelper {
             Log.d("mLog","0 rows");
 
         cursor.close();
+        return list;
     }
+
+
 }

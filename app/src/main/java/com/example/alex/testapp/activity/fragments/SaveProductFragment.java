@@ -1,6 +1,7 @@
 package com.example.alex.testapp.activity.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.alex.testapp.R;
+import com.example.alex.testapp.TabsActivity;
+import com.example.alex.testapp.activity.ProductActivity;
 import com.example.alex.testapp.database.ProductsDataBase;
 import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.recycler_view.ProductFragment;
@@ -22,11 +26,12 @@ import com.example.alex.testapp.recycler_view.ProductRecViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveProductFragment extends Fragment implements ProductFragment.OnListFragmentInteractionListener {
+public class SaveProductFragment extends Fragment {
 
     private View view;
     private ProductFragment.OnListFragmentInteractionListener listener;
     private List<ResponseProduct> itemList;
+    private int listing_id;
 
 
     @Nullable
@@ -42,7 +47,20 @@ public class SaveProductFragment extends Fragment implements ProductFragment.OnL
     public void onStart() {
         super.onStart();
 
-//        initRecycler();
+        initResources();
+        initRecycler();
+    }
+
+    private void initResources(){
+        listing_id = getActivity().getIntent().getIntExtra("key", 0);
+        listener = new ProductFragment.OnListFragmentInteractionListener() {
+            @Override
+            public void onListFragmentInteraction(ResponseProduct item) {
+                Intent saveIntent = new Intent(getContext(), ProductActivity.class);
+                saveIntent.putExtra("key", item.getListingId());
+                startActivity(saveIntent);
+            }
+        };
     }
 
     private List<ResponseProduct> getProductList(Context context){
@@ -74,8 +92,4 @@ public class SaveProductFragment extends Fragment implements ProductFragment.OnL
         recyclerView.setAdapter(recViewAdapter);
     }
 
-    @Override
-    public void onListFragmentInteraction(ResponseProduct item) {
-
-    }
 }
