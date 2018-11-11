@@ -26,6 +26,8 @@ public class ProductActivity extends AppCompatActivity {
     private TextView price;
     private ResponseProduct product;
     private ProductsDataBase productsDB;
+    private Button btnDelete;
+    private Button btnSave;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class ProductActivity extends AppCompatActivity {
         description.setText(product.getDescription());
         price.setText(product.getPrice());
     }
-
 
     private void initFoundProduct(int listing_id){
         String query = "SELECT * FROM " + ProductsDataBase.FIND_PRODUCT_DB;
@@ -97,6 +98,8 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void initResources(){
+        btnDelete = findViewById(R.id.btn_delete);
+        btnSave = findViewById(R.id.btn_save);
         save_id = getIntent().getIntExtra("key", 0);
         listing_id = getIntent().getIntExtra("key", 0);
         Log.d("TAG", "linked ID " + listing_id);
@@ -108,12 +111,10 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void onClick(){
-        Button btnSave = findViewById(R.id.btn_save);
         btnSave.setOnClickListener(listener ->{
             productsDB.saveProduct(product);
             Toast.makeText(this, "Add to Save Product!", Toast.LENGTH_SHORT).show();
         });
-        Button btnDelete = findViewById(R.id.btn_delete);
         btnDelete.setOnClickListener(listener ->{
             Toast.makeText(this, "Delete from Save Product!", Toast.LENGTH_SHORT).show();
             productsDB.deleteProduct(save_id);

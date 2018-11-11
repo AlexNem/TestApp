@@ -109,7 +109,6 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = "_id = " + listing_id;
-        String selectionArgs[] = new String[] {};
         Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
                 null, null, null, null);
         if (cursor.moveToFirst()){
@@ -138,6 +137,29 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         }
         db.close();
         return list;
+    }
+
+    public ResponseProduct initFoundProduct(int listing_id){
+        String query = "SELECT * FROM " + ProductsDataBase.FIND_PRODUCT_DB;
+        ResponseProduct product = new ResponseProduct();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = "_id = " + listing_id;
+        String selectionArgs[] = new String[] {};
+        Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
+                null, null, null, null);
+        if (cursor.moveToFirst()){
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(ProductsDataBase.KEY_ID));
+                String url = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_IMAGE_URL));
+                String name = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_DESCRIPTION));
+                String price = cursor.getString(cursor.getColumnIndex(ProductsDataBase.KEY_PRICE));
+                product = new ResponseProduct(id, url, name, description, price);
+                Log.d("TAG", "product " + product.getListingId());
+            }while (cursor.moveToNext());
+        }
+        db.close();
+        return product;
     }
 
 
