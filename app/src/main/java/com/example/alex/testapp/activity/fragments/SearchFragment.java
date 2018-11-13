@@ -1,8 +1,11 @@
 package com.example.alex.testapp.activity.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,6 +51,7 @@ public class SearchFragment extends Fragment {
     private EditText edSearch;
     private Spinner spinner;
     private ProductsDataBase productsDB;
+    private NetworkInfo networkInfo;
 
     @Nullable
     @Override
@@ -73,6 +77,8 @@ public class SearchFragment extends Fragment {
     }
 
     private void initResources(){
+        ConnectivityManager manager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = manager.getActiveNetworkInfo();
         edSearch = view.findViewById(R.id.ed_search);
         serviceRetrofit = new ServiceRetrofit();
         foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
@@ -162,11 +168,12 @@ public class SearchFragment extends Fragment {
         });
     }
 
+
     private void clickSubmit(){
         btnSubmit.setOnClickListener(listener -> {
             searchQuery = edSearch.getText().toString();
-            if (searchQuery.isEmpty()){
-                Toast.makeText(getContext(), "Search field is empty!Please fill search!",
+            if (searchQuery.isEmpty()&&networkInfo != null&&networkInfo.isConnected()){
+                Toast.makeText(getContext(), "Search field is empty, or no Internet Connection!",
                         Toast.LENGTH_LONG).show();
             }else {
                 Log.d("TAG", "search word " + searchQuery);

@@ -1,13 +1,11 @@
-package com.example.alex.testapp;
+package com.example.alex.testapp.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.alex.testapp.activity.TabsAdapter;
+import com.example.alex.testapp.R;
 import com.example.alex.testapp.activity.fragments.SaveProductFragment;
 import com.example.alex.testapp.activity.fragments.SearchFragment;
 
@@ -21,20 +19,8 @@ public class TabsActivity extends AppCompatActivity {
 
 
         initViewPager();
-        initResources();
     }
 
-    private void getUri() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "https://openapi.etsy.com/v2/listings/active"
-                        + "?api_key=" + Constants.KEY ));
-        startActivity(intent);
-    }
-
-    private void initResources(){
-
-
-    }
 
     private void initViewPager(){
         ViewPager viewPager = findViewById(R.id.view_pager);
