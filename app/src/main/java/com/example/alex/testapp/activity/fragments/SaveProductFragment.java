@@ -54,7 +54,7 @@ public class SaveProductFragment extends Fragment {
             @Override
             public void onListFragmentInteraction(ResponseProduct item) {
                 Intent saveIntent = new Intent(getContext(), ProductActivity.class);
-                saveIntent.putExtra("key", item.getListingId());
+                saveIntent.putExtra("keyS", item.getListingId());
                 startActivity(saveIntent);
             }
         };

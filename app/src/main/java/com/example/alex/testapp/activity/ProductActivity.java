@@ -37,8 +37,10 @@ public class ProductActivity extends AppCompatActivity {
         initResources();
         if (listing_id==0){
             initSaveProduct(save_id);
+            Log.d("TAg", "initSave_Pr" + listing_id);
         }else {
             initFoundProduct(listing_id);
+            Log.d("TAg", "initFind_Pr" + listing_id);
         }
         onClick();
         setActivity();
@@ -58,7 +60,6 @@ public class ProductActivity extends AppCompatActivity {
         productsDB = new ProductsDataBase(this);
         SQLiteDatabase db = productsDB.getReadableDatabase();
         String selection = "_id = " + listing_id;
-        String selectionArgs[] = new String[] {};
         Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
                 null, null, null, null);
         if (cursor.moveToFirst()){
@@ -76,12 +77,11 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void initSaveProduct(int save_id){
-        String query = "SELECT * FROM " + ProductsDataBase.FIND_PRODUCT_DB;
+        String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
         productsDB = new ProductsDataBase(this);
         SQLiteDatabase db = productsDB.getReadableDatabase();
         String selection = "_id = " + save_id;
-        String selectionArgs[] = new String[] {};
-        Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
+        Cursor cursor = db.query(ProductsDataBase.SAVE_PRODUCT_DB, null, selection,
                 null, null, null, null);
         if (cursor.moveToFirst()){
             do {
@@ -100,7 +100,7 @@ public class ProductActivity extends AppCompatActivity {
     private void initResources(){
         btnDelete = findViewById(R.id.btn_delete);
         btnSave = findViewById(R.id.btn_save);
-        save_id = getIntent().getIntExtra("key", 0);
+        save_id = getIntent().getIntExtra("keyS", 1);
         listing_id = getIntent().getIntExtra("key", 0);
         Log.d("TAG", "linked ID " + listing_id);
         imageProduct = findViewById(R.id.iv_product);

@@ -146,6 +146,7 @@ public class SearchFragment extends Fragment {
         spinner = view.findViewById(R.id.sp_categories);
         spinner.setAdapter(adapter);
         spinner.setPrompt("Categories");
+        spinner.setSelection(0, true);
 //        spinner.setSelection(1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

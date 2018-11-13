@@ -109,7 +109,7 @@ public class ProductsDataBase extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + ProductsDataBase.SAVE_PRODUCT_DB;
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = "_id = " + listing_id;
-        Cursor cursor = db.query(ProductsDataBase.FIND_PRODUCT_DB, null, selection,
+        Cursor cursor = db.query(ProductsDataBase.SAVE_PRODUCT_DB, null, selection,
                 null, null, null, null);
         if (cursor.moveToFirst()){
             do {
