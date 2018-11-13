@@ -2,8 +2,6 @@ package com.example.alex.testapp.activity.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,7 +31,6 @@ import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.services.EtsyAPI;
 import com.example.alex.testapp.services.ServiceRetrofit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +65,6 @@ public class SearchFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initResources();
-
-
     }
 
     @Override
@@ -80,7 +75,6 @@ public class SearchFragment extends Fragment {
     }
 
     private void initResources(){
-
         edSearch = view.findViewById(R.id.ed_search);
         serviceRetrofit = new ServiceRetrofit();
         foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
@@ -88,10 +82,8 @@ public class SearchFragment extends Fragment {
         productsDB = new ProductsDataBase(getContext());
     }
 
-
-
     private void getListCategories(){
-        Retrofit retrofit = serviceRetrofit.getCategoriesRetrofit();
+        Retrofit retrofit = serviceRetrofit.getResultRetrofit();
         EtsyAPI service = retrofit.create(EtsyAPI.class);
         Observable<Categories> getCategories = service.getCategories(Constants.KEY);
         getCategories
@@ -147,7 +139,6 @@ public class SearchFragment extends Fragment {
 
     }
 
-
     private void initSpinner(List<String> categoriesList){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 R.layout.support_simple_spinner_dropdown_item, categoriesList);
@@ -192,7 +183,6 @@ public class SearchFragment extends Fragment {
 
 
     }
-
 
     private void clickSubmit(){
         btnSubmit.setOnClickListener(listener -> {
