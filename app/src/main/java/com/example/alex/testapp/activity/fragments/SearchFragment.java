@@ -172,7 +172,7 @@ public class SearchFragment extends Fragment {
     private void clickSubmit(){
         btnSubmit.setOnClickListener(listener -> {
             searchQuery = edSearch.getText().toString();
-            if (searchQuery.isEmpty()&&networkInfo != null&&networkInfo.isConnected()){
+            if (searchQuery.isEmpty()){
                 Toast.makeText(getContext(), "Search field is empty, or no Internet Connection!",
                         Toast.LENGTH_LONG).show();
             }else {
@@ -181,8 +181,6 @@ public class SearchFragment extends Fragment {
                 getListProduct();
                 startActivity(foundActivityIntend);
             }
-
-
                 }
 
         );
