@@ -2,6 +2,7 @@ package com.example.alex.testapp.activity.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -32,6 +33,7 @@ import com.example.alex.testapp.model.ResponseProduct;
 import com.example.alex.testapp.services.EtsyAPI;
 import com.example.alex.testapp.services.ServiceRetrofit;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class SearchFragment extends Fragment {
     private ProductsDataBase productsDB;
     private NetworkInfo networkInfo;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,20 +68,19 @@ public class SearchFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initResources();
-        getListCategories();
-        clickSubmit();
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        checkInternet();
 
     }
 
     private void initResources(){
-        ConnectivityManager manager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkInfo = manager.getActiveNetworkInfo();
+
         edSearch = view.findViewById(R.id.ed_search);
         serviceRetrofit = new ServiceRetrofit();
         foundActivityIntend = new Intent(getContext(), FoundProductActivity.class);
@@ -153,7 +155,7 @@ public class SearchFragment extends Fragment {
         spinner = view.findViewById(R.id.sp_categories);
         spinner.setAdapter(adapter);
         spinner.setPrompt("Categories");
-        spinner.setSelection(21);
+//        spinner.setSelection(1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -168,12 +170,35 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    private boolean checkInternet(){
+        ConnectivityManager manager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = manager.getActiveNetworkInfo();
+       try{
+           if (networkInfo==null){
+               List<String> cat = new ArrayList<>();
+               cat.add(0, "Not Internet!");
+               initSpinner(cat);
+               Toast.makeText(getContext(), "Not Internet Connection!\n" +
+                       "On Internet and restart App!", Toast.LENGTH_LONG).show();
+               return false;
+           }else
+               getListCategories();
+               clickSubmit();
+               return true;
+       }catch (Exception e){
+           Log.d("TAG", "Not Internet Connection", e);
+           return false;
+       }
+
+
+    }
+
 
     private void clickSubmit(){
         btnSubmit.setOnClickListener(listener -> {
             searchQuery = edSearch.getText().toString();
             if (searchQuery.isEmpty()){
-                Toast.makeText(getContext(), "Search field is empty, or no Internet Connection!",
+                Toast.makeText(getContext(), "Search field is empty!",
                         Toast.LENGTH_LONG).show();
             }else {
                 Log.d("TAG", "search word " + searchQuery);
